@@ -28,8 +28,9 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/markgravity/SwiftyAnalytics.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
-
+  s.watchos.deployment_target = '4.0'
+  s.ios.deployment_target = '13.0'
+  s.swift_version = '5.0'
   s.source_files = 'SwiftyAnalytics/Classes/**/*'
   
   # s.resource_bundles = {
@@ -39,4 +40,28 @@ TODO: Add long description of the pod here.
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
+  s.static_framework = true
+  s.subspec 'Core' do |sp|
+    sp.source_files = 'SwiftyAnalytics/Classes/Core/**/*'
+  end
+ 
+  s.subspec 'Firebase' do |sp|
+    sp.source_files = 'SwiftyAnalytics/Classes/Providers/Firebase/**/*'
+    sp.dependency 'SwiftyAnalytics/Core'
+    sp.dependency 'Firebase/Analytics'
+  end
+  
+  s.subspec 'Facebook' do |sp|
+    sp.source_files = 'SwiftyAnalytics/Classes/Providers/Facebook/**/*'
+    sp.dependency 'SwiftyAnalytics/Core'
+    sp.dependency 'FBSDKCoreKit'
+  end
+  
+  s.subspec 'Tenjin' do |sp|
+    sp.source_files = 'SwiftyAnalytics/Classes/Providers/Tenjin/**/*'
+    sp.dependency 'SwiftyAnalytics/Core'
+    sp.preserve_paths = 'SwiftyAnalytics/Classes/Providers/Tenjin/SDK/*.h'
+    sp.vendored_libraries = 'SwiftyAnalytics/Classes/Providers/Tenjin/SDK/libTenjinSDKUniversal.a'
+    sp.xcconfig = { 'HEADER_SEARCH_PATHS' => "${PODS_ROOT}/#{s.name}/Classes/Providers/Tenjin/**" }
+  end
 end

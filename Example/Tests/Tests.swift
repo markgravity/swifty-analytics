@@ -1,5 +1,5 @@
 import XCTest
-import SwiftyAnalytics
+//import SwiftyAnalytics
 
 class Tests: XCTestCase {
     

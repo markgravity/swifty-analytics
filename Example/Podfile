@@ -1,7 +1,9 @@
 use_frameworks!
 
 target 'SwiftyAnalytics_Example' do
-  pod 'SwiftyAnalytics', :path => '../'
+  pod 'SwiftyAnalytics/Firebase', :path => '../'
+  pod 'SwiftyAnalytics/Facebook', :path => '../'
+  pod 'SwiftyAnalytics/Tenjin', :path => '../'
 
   target 'SwiftyAnalytics_Tests' do
     inherit! :search_paths

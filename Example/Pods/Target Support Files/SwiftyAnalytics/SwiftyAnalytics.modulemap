@@ -1,0 +1,6 @@
+framework module SwiftyAnalytics {
+  umbrella header "SwiftyAnalytics-umbrella.h"
+
+  export *
+  module * { export * }
+}
