@@ -64,7 +64,7 @@ extension Analytics {
     public func log(event name: String, parameters: [String:Any]?, providers: [AnalyticsProviable.Type]) {
         
         let parameters = _appendAutomaticallyCollectedParamaters(parameters)
-        print("[analytics] - log > ", name, parameters)
+        print("[analytics] - log > ", name, parameters == nil ? nil : parameters!)
         let all = _getFilteredProviders(providers)
         all
             .forEach { $0.log(event: name, parameters: parameters) }
@@ -81,7 +81,7 @@ extension Analytics {
         all?.forEach {
             
             let parameters = _appendAutomaticallyCollectedParamaters(event.parameters($0))
-            print("[analytics] - log > ", event.name(), parameters)
+            print("[analytics] - log > ", event.name(), parameters == nil ? nil : parameters!)
             $0.log(
                 event: event.name(),
                 parameters: parameters
