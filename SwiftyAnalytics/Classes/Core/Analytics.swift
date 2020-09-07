@@ -31,8 +31,8 @@ extension Analytics {
     }
     
     /// Set user attributes
-    public func setUserProerty(_ value: String?, for name: String) {
-        _providers.forEach { $0.setUserProerty(value, for: name) }
+    public func setUserProperty(_ value: String?, for name: String) {
+        _providers.forEach { $0.setUserProperty(value, for: name) }
     }
     
     /// Set screen name associated with a class

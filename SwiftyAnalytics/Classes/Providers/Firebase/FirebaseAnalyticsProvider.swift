@@ -24,7 +24,7 @@ public class FirebaseAnalyticsProvider: AnalyticsProviable {
         FirebaseAnalytics.Analytics.setUserID(userId)
     }
 
-    public func setUserProerty(_ value: String?, for name: String) {
+    public func setUserProperty(_ value: String?, for name: String) {
         FirebaseAnalytics.Analytics.setUserProperty(value, forName: name)
     }
 

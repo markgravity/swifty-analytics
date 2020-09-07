@@ -21,7 +21,7 @@ public protocol AnalyticsProviable {
 
 public extension AnalyticsProviable {
     func setUserId(_ userId: String?) {}
-    func setUserProerty(_ value: String?, for name: String) {}
+    func setUserProperty(_ value: String?, for name: String) {}
     func setScreenName(_ screenName: String?, screenClass: String?) {}
     
     func log(event name: String, parameters: [String:Any]?) {

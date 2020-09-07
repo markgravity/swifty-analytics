@@ -15,7 +15,7 @@ public class FacebookAnalyticsProvider: AnalyticsProviable {
         AppEvents.userID = userId
     }
     
-    public func setUserProerty(_ value: String?, for name: String) {
+    public func setUserProperty(_ value: String?, for name: String) {
 
     }
     
