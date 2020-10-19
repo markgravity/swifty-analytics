@@ -10,8 +10,11 @@ import StoreKit
 
 // MARK: - Providable
 public protocol AnalyticsProviable {
+    var shouldAppendingAutomaticallyCollectedParamaters: Bool { get set }
+    var shouldLoggingPopupViewEvent: Bool { get set }
+    
     func setUserId(_ userId: String?)
-    func setUserProerty(_ value: String?, for name: String)
+    func setUserProperty(_ value: String?, for name: String)
     func setScreenName(_ screenName: String?, screenClass: String?)
     func log(event name: String, parameters: [String:Any]?)
     
@@ -20,6 +23,9 @@ public protocol AnalyticsProviable {
 }
 
 public extension AnalyticsProviable {
+    var shouldAppendingAutomaticallyCollectedParamaters: Bool { true }
+    var shouldLoggingPopupViewEvent: Bool { true }
+    
     func setUserId(_ userId: String?) {}
     func setUserProperty(_ value: String?, for name: String) {}
     func setScreenName(_ screenName: String?, screenClass: String?) {}

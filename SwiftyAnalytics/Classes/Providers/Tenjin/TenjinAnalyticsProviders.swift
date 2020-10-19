@@ -7,6 +7,9 @@
 
 open class TenjinAnalyticsProviders: AnalyticsProviable {
     
+    public var shouldAppendingAutomaticallyCollectedParamaters: Bool = true
+    public var shouldLoggingPopupViewEvent: Bool = true
+    
     public init(apiToken: String) {
         TenjinSDK.`init`(apiToken)
         TenjinSDK.connect()

@@ -10,6 +10,9 @@ import UIKit
 
 public class FacebookAnalyticsProvider: AnalyticsProviable {
     
+    public var shouldAppendingAutomaticallyCollectedParamaters: Bool = true
+    public var shouldLoggingPopupViewEvent: Bool = true
+    
     public init() {}
     public func setUserId(_ userId: String?) {
         AppEvents.userID = userId

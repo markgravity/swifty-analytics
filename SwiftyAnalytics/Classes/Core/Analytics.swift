@@ -9,10 +9,14 @@ import StoreKit
 
 // MARK: Analytics
 public class Analytics<EventType: AnalyticsEventable>: AnalyticsProviable {
+    public var shouldLoggingPopupViewEvent: Bool = true
+    public var shouldAppendingAutomaticallyCollectedParamaters: Bool = true
+    
     fileprivate var _providers: [AnalyticsProviable]!
     fileprivate var _popupAnyalyticDatas = [PopupAnalyticData]()
     fileprivate var _engagementTracker = EngagementTracker()
     
+    public fileprivate(set) var lastScreen: String?
     public init() {
         
         _registerPopupNotifications()
@@ -37,12 +41,16 @@ extension Analytics {
     
     /// Set screen name associated with a class
     public func setScreenName<T>(_ screenName: String?, type: T.Type) {
+        
+        lastScreen = screenName
         _providers.forEach { $0.setScreenName(screenName, screenClass: "\(T.self)" )}
     }
     
     /// Set popup name associated with a class
     public func setPopupName<T>(_ popupName: String?, type: T.Type) {
        
+        lastScreen = popupName
+        
         guard
             let index = self._popupAnyalyticDatas
                 .lastIndex(where: { $0.className == "\(type.self)" })
@@ -55,19 +63,25 @@ extension Analytics {
     /// Log an event with name & parameters
     public func log(event name: String, parameters: [String:Any]?) {
         
-        let parameters = _appendAutomaticallyCollectedParamaters(parameters)
         print("[analytics] - log > ", name, parameters == nil ? nil : parameters!)
         _providers
-            .forEach { $0.log(event: name, parameters: parameters) }
-    }
-    
-    public func log(event name: String, parameters: [String:Any]?, providers: [AnalyticsProviable.Type]) {
-        
-        let parameters = _appendAutomaticallyCollectedParamaters(parameters)
-        print("[analytics] - log > ", name, parameters == nil ? nil : parameters!)
-        let all = _getFilteredProviders(providers)
-        all
-            .forEach { $0.log(event: name, parameters: parameters) }
+            .forEach {
+                
+                // Skip popup view event
+                if name == "popup_view"
+                    && !$0.shouldLoggingPopupViewEvent {
+                    return
+                }
+                
+                var parameters = parameters
+                
+                // Automatically collected params
+                if $0.shouldAppendingAutomaticallyCollectedParamaters {
+                    parameters = _appendAutomaticallyCollectedParamaters(parameters)
+                }
+                
+                $0.log(event: name, parameters: parameters)
+            }
     }
     
     /// Log an event with an `EventType`
@@ -80,7 +94,13 @@ extension Analytics {
         
         all?.forEach {
             
-            let parameters = _appendAutomaticallyCollectedParamaters(event.parameters($0))
+            var parameters = event.parameters($0)
+            
+            // Automatically collected params
+            if $0.shouldAppendingAutomaticallyCollectedParamaters {
+                parameters = _appendAutomaticallyCollectedParamaters(parameters)
+            }
+            
             print("[analytics] - log > ", event.name(), parameters == nil ? nil : parameters!)
             $0.log(
                 event: event.name(),
@@ -105,7 +125,10 @@ extension Analytics {
     fileprivate func _getFilteredProviders(_ types: [AnalyticsProviable.Type]) -> [AnalyticsProviable] {
         let typeStrings = types.map { "\($0.self)" }
         return _providers.filter {
-            typeStrings.contains("\($0.self)")
+            
+            let type = "\($0.self)".split(separator: ".").last?
+                .split(separator: ":").first ?? ""
+            return typeStrings.contains(String(type))
         }
     }
     

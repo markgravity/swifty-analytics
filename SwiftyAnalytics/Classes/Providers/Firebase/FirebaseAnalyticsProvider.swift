@@ -10,6 +10,9 @@ import FirebaseAnalytics
 
 public class FirebaseAnalyticsProvider: AnalyticsProviable {
 
+    public var shouldAppendingAutomaticallyCollectedParamaters: Bool = true
+    public var shouldLoggingPopupViewEvent: Bool = true
+    
     public init(options: FirebaseOptions? = nil) {
         
         guard FirebaseApp.app() == nil else { return }
